@@ -1,0 +1,86 @@
+
+<!--自动播放幻灯片-->
+
+<!DOCTYPE html>
+<html lang="en-AU">
+<meta charset="utf-8"/>
+    <head>
+        <meta name="viewpoint" content="width=device-width, initial-scale=1">
+        <title>Js Practice</title>
+        <link rel="stylesheet" type="text/css" href="./moveslider.css"/>
+        <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">-->
+    </head>
+    <body>
+        <div id="play" class="play">
+            <ul>
+                <li><img src="./static/img1.jpg"></li>
+                <li><img src="./static/img2.jpg"></li>
+                <li><img src="./static/img3.jpg"></li>
+                <li><img src="./static/img4.jpg"></li>
+                <li><img src="./static/img5.jpg"></li>
+            </ul>
+            <!--<div id="container" class="container">
+            <div class="picture"><img src="./static/img1.jpg"></div>
+            <div class="picture"><img src="./static/img2.jpg"></div>
+            <div class="picture"><img src="./static/img3.jpg"></div>
+            <div class="picture"><img src="./static/img4.jpg"></div>
+            <div class="picture"><img src="./static/img5.jpg"></div>
+        </div>-->
+            <ol>
+                <li class="active">1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+
+            </ol>
+        </div>
+    <script>
+        var oDiv = document.getElementById('play');
+        var aBtn = oDiv.getElementsByTagName('ol') [0].getElementsByTagName('li');
+        var oUl = oDiv.getElementsByTagName('ul') [0];
+
+        var now = 0;     //自动播放前，1. 先设定一个now=0
+        for(var i = 0; i < aBtn.length; i ++) {
+            aBtn[i].index = i;  
+            aBtn[i].onclick = function () {
+                now = this.index;   // 2. 在点击里给now赋个值
+                tab ();           // 4. 在点击函数里，调用这个封装好的函数，注意写清楚位置
+            };
+        } 
+
+        function tab () {        //3. 封装一个函数，把this.index的部分都替换成now
+            for(var i = 0; i < aBtn.length; i ++) {
+                    aBtn[i].className = '';
+                }
+                aBtn[now].className = 'active';
+                //oUl.style.top = -300 * this.index + 'px';    // 显示第0张图片，top是300；第1张是，600；第2张是900
+                move(oUl, {top: -320 * now});      //在封装好的函数中已经加上了px
+            }
+
+
+        function next () {     // 5. 新加一个函数，让now=now+1，逐个播放，当now等于当前button的长度时，从头开始
+            now ++;
+            if (now == aBtn.length) {
+                now = 0;
+            }
+            tab ();            // 6. 同样调用已经封装好的函数
+        }
+
+        var timer = setInterval(next, 2000);    // 7. 给整个div加一个定时器，把写好的自动播放的next函数放进去
+
+        oDiv.onmouseover = function () {      // 8. 鼠标入，定时器关；鼠标出，定时器开
+            clearInterval(timer);
+        }
+
+        oDiv.onmouseout = function () {
+            timer = setInterval(next, 2000);
+        }
+       
+
+        
+    </script>
+          
+    <script src="./moveslider.js" type="text/javascript"></script>
+    </body>
+    </html>
